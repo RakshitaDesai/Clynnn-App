@@ -67,6 +67,10 @@ export default function Index() {
     router.push('/auth/signin');
   };
 
+  const handleBypassAuth = () => {
+    router.replace('/(tabs)/home');
+  };
+
   // Show loading state while checking authentication
   if (loading) {
     return (
@@ -173,6 +177,16 @@ export default function Index() {
           >
             <View style={styles.secondaryButtonContent}>
               <Text style={[styles.secondaryButtonText, { color: theme.textSecondary }]}>Already have an account? Sign In</Text>
+            </View>
+          </TouchableOpacity>
+
+          {/* Development bypass button */}
+          <TouchableOpacity 
+            style={styles.bypassButton}
+            onPress={handleBypassAuth}
+          >
+            <View style={styles.bypassButtonContent}>
+              <Text style={[styles.bypassButtonText, { color: theme.primary }]}>🚀 Dev Bypass</Text>
             </View>
           </TouchableOpacity>
         </Animated.View>
@@ -353,5 +367,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: Platform.OS === 'ios' ? 'Avenir Next' : 'sans-serif',
     marginTop: 24,
+  },
+  bypassButton: {
+    width: '100%',
+    borderRadius: 12,
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: 'rgba(76, 175, 80, 0.3)',
+    marginTop: 12,
+  },
+  bypassButtonContent: {
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+  bypassButtonText: {
+    fontSize: 14,
+    fontFamily: Platform.OS === 'ios' ? 'Avenir Next' : 'sans-serif',
+    fontWeight: '600',
   },
 });

@@ -12,9 +12,10 @@ import { useTheme } from '../context/ThemeContext';
 
 interface FloatingActionButtonProps {
   onPress: () => void;
+  icon?: string;
 }
 
-export default function FloatingActionButton({ onPress }: FloatingActionButtonProps) {
+export default function FloatingActionButton({ onPress, icon = "add" }: FloatingActionButtonProps) {
   const insets = useSafeAreaInsets();
   const { theme } = useTheme();
   
@@ -88,7 +89,7 @@ export default function FloatingActionButton({ onPress }: FloatingActionButtonPr
           style={styles.gradient}
         >
           <Animated.View style={{ transform: [{ rotate: rotation }] }}>
-            <Ionicons name="add" size={28} color="#FFFFFF" />
+            <Ionicons name={icon as any} size={28} color="#FFFFFF" />
           </Animated.View>
         </LinearGradient>
       </TouchableOpacity>

@@ -171,6 +171,27 @@ export default function Sidebar({ isVisible, onClose }: SidebarProps) {
               <Ionicons name="chevron-forward" size={20} color={theme.textTertiary} />
             </TouchableOpacity>
 
+            {/* Record Waste Collection - Priority Action */}
+            <View style={styles.section}>
+              <TouchableOpacity
+                style={[styles.priorityAction, { backgroundColor: `${theme.primary}15`, borderColor: `${theme.primary}30` }]}
+                onPress={() => handleNavigation('/record-waste')}
+              >
+                <View style={[styles.priorityActionIcon, { backgroundColor: theme.primary }]}>
+                  <Ionicons name="qr-code-outline" size={24} color="#FFFFFF" />
+                </View>
+                <View style={styles.priorityActionContent}>
+                  <Text style={[styles.priorityActionTitle, { color: theme.text }]}>
+                    Record Waste Collection
+                  </Text>
+                  <Text style={[styles.priorityActionSubtitle, { color: theme.textSecondary }]}>
+                    Scan QR codes to record waste
+                  </Text>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color={theme.primary} />
+              </TouchableOpacity>
+            </View>
+
             {/* Platform Sections */}
             {platformSections.map((section, sectionIndex) => (
               <View key={section.title} style={styles.section}>
@@ -385,6 +406,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footerText: {
+    fontSize: 12,
+    fontFamily: Platform.OS === 'ios' ? 'Avenir Next' : 'sans-serif',
+  },
+  priorityAction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    marginHorizontal: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  priorityActionIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  priorityActionContent: {
+    flex: 1,
+  },
+  priorityActionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    fontFamily: Platform.OS === 'ios' ? 'Avenir Next' : 'sans-serif-medium',
+    marginBottom: 2,
+  },
+  priorityActionSubtitle: {
     fontSize: 12,
     fontFamily: Platform.OS === 'ios' ? 'Avenir Next' : 'sans-serif',
   },

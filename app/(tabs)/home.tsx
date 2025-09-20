@@ -18,6 +18,7 @@ import { useTheme } from '../../context/ThemeContext';
 import Post, { PostData } from '../../components/Post';
 import Sidebar from '../../components/Sidebar';
 import FloatingActionButton from '../../components/FloatingActionButton';
+import { likePost, unlikePost, repostPost, unrepostPost } from '../../services/postService';
 
 // Mock data for posts
 const mockPosts: PostData[] = [
@@ -124,19 +125,74 @@ export default function Home() {
     }, 1500);
   }, []);
 
-  const handleLike = (postId: string) => {
-    console.log('Liked post:', postId);
-    // Handle like logic here
+  const handleLike = async (postId: string) => {
+    // Find the post and update it optimistically
+    const postIndex = posts.findIndex(p => p.id === postId);
+    if (postIndex === -1) return;
+
+    const currentPost = posts[postIndex];
+    const isCurrentlyLiked = currentPost.liked;
+    
+    // Optimistic update
+    const updatedPosts = [...posts];
+    updatedPosts[postIndex] = {
+      ...currentPost,
+      liked: !isCurrentlyLiked,
+      likes: isCurrentlyLiked ? currentPost.likes - 1 : currentPost.likes + 1
+    };
+    setPosts(updatedPosts);
+
+    try {
+      // Call the service
+      if (isCurrentlyLiked) {
+        await unlikePost(postId, 'currentUserId');
+      } else {
+        await likePost(postId, 'currentUserId');
+      }
+    } catch (error) {
+      // Revert on error
+      const revertedPosts = [...posts];
+      revertedPosts[postIndex] = currentPost;
+      setPosts(revertedPosts);
+      console.error('Failed to like/unlike post:', error);
+    }
   };
 
   const handleComment = (postId: string) => {
-    console.log('Comment on post:', postId);
-    // Handle comment logic here
+    router.push(`/post/${postId}/comments`);
   };
 
-  const handleRepost = (postId: string) => {
-    console.log('Reposted post:', postId);
-    // Handle repost logic here
+  const handleRepost = async (postId: string) => {
+    // Find the post and update it optimistically
+    const postIndex = posts.findIndex(p => p.id === postId);
+    if (postIndex === -1) return;
+
+    const currentPost = posts[postIndex];
+    const isCurrentlyReposted = currentPost.reposted;
+    
+    // Optimistic update
+    const updatedPosts = [...posts];
+    updatedPosts[postIndex] = {
+      ...currentPost,
+      reposted: !isCurrentlyReposted,
+      reposts: isCurrentlyReposted ? currentPost.reposts - 1 : currentPost.reposts + 1
+    };
+    setPosts(updatedPosts);
+
+    try {
+      // Call the service
+      if (isCurrentlyReposted) {
+        await unrepostPost(postId, 'currentUserId');
+      } else {
+        await repostPost(postId, 'currentUserId');
+      }
+    } catch (error) {
+      // Revert on error
+      const revertedPosts = [...posts];
+      revertedPosts[postIndex] = currentPost;
+      setPosts(revertedPosts);
+      console.error('Failed to repost/unrepost post:', error);
+    }
   };
 
   const handleShare = (postId: string) => {
@@ -153,8 +209,7 @@ export default function Home() {
   };
 
   const handleFloatingAction = () => {
-    console.log('Floating action pressed');
-    // Handle create post or other action
+    router.push('/create-post');
   };
 
   const handleNotifications = () => {

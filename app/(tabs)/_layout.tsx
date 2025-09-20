@@ -63,6 +63,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="waste-collection-history"
+        options={{
+          title: 'Collection',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="archive-outline" size={size} color={color} />
+          ),
+        }}
+      />
       {/* Hidden tabs that will be accessed via sidebar */}
       <Tabs.Screen
         name="notifications"

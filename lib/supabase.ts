@@ -21,5 +21,16 @@ export const supabase = createClient(
       detectSessionInUrl: false,
       storage: AsyncStorage,
     },
+    global: {
+      fetch: (url, options = {}) => {
+        console.log('Supabase request to:', url);
+        return fetch(url, {
+          ...options,
+          headers: {
+            ...options.headers,
+          },
+        });
+      },
+    },
   }
 );

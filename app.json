@@ -23,6 +23,9 @@
         "backgroundColor": "#1B5E20"
       },
       "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "bundler": "metro"
     }
   }
 }
